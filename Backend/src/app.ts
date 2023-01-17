@@ -1,6 +1,8 @@
 import * as express from 'express';
 import mongoose from 'mongoose';
 import * as compression from 'compression';
+import ErrorMiddleware from './utils/middlewares/errorMiddleware';
+import KioskController from './controllers/kiosk/kiosk.controller';
 
 class App {
   public express: express.Application;
@@ -36,11 +38,11 @@ class App {
   }
 
   private initialiseRoutes() {
-    // TODO: add routes
+    this.express.use('/api', new KioskController().router);
   }
 
   private initialiseErrorHandling() {
-    // TODO: add error handling
+    this.express.use(ErrorMiddleware);
   }
 
   public listen() {
