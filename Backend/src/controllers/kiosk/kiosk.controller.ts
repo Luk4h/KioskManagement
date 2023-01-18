@@ -33,6 +33,19 @@ class KioskController implements Controller {
         storeOpensAt,
         storeClosesAt,
       } = request.body;
+      if (
+        !(
+          id &&
+          serialKey &&
+          description &&
+          isKioskClosed &&
+          storeOpensAt &&
+          storeClosesAt
+        )
+      ) {
+        next(new HttpException(400, 'Missing parameters'));
+        return;
+      }
       try {
         const kiosk = await KioskModel.create({
           id,
