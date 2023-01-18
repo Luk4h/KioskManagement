@@ -15,6 +15,7 @@ class KioskController implements Controller {
     this.router.get(`${this.path}`, this.query);
     this.router.post(`${this.path}`, this.create);
     this.router.put(`${this.path}`, this.edit);
+    this.router.delete(`${this.path}`, this.delete);
   }
 
   private create = async (
@@ -88,7 +89,22 @@ class KioskController implements Controller {
       );
       response.status(201).json({kiosk});
     } catch (error) {
-      next(new HttpException(400, 'Cannot create kiosk'));
+      next(new HttpException(400, 'Cannot edit kiosk'));
+    }
+  };
+
+  private delete = async (
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const {id} = request.body;
+
+      const kiosk = await KioskModel.deleteOne({id: id});
+      response.status(201).json({kiosk});
+    } catch (error) {
+      next(new HttpException(400, 'Cannot delete kiosk'));
     }
   };
 }
