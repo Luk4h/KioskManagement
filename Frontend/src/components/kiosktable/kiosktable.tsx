@@ -1,6 +1,6 @@
 import KioskRow from "./kioskrow"
 
-const KiosksTable = () => {
+const KiosksTable = (props: {kiosks: any[]}) => {
 
     return (
         <section id="KiosksTable" className="flex justify-between w-full">
@@ -19,7 +19,7 @@ const KiosksTable = () => {
                         </tr>
                     </thead>
                     <tbody className="bg-white dark:bg-slate-800">
-                        <KioskRow/>
+                        { props.kiosks && props.kiosks.map(kiosk => <KioskRow kiosk={kiosk}/>) }
                     </tbody>
                     </table>
                 </div>
