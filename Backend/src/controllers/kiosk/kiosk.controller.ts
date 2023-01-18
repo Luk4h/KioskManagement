@@ -3,6 +3,7 @@ import Controller from '../../utils/interfaces/controller';
 import KioskModel from '../../models/kiosk';
 import HttpException from '../../utils/exceptions/exceptions';
 import dbExeption from '../../utils/interfaces/dbException';
+import Kiosk from '../../utils/interfaces/kiosk';
 
 class KioskController implements Controller {
   public path = '/kiosks';
@@ -32,15 +33,15 @@ class KioskController implements Controller {
         isKioskClosed,
         storeOpensAt,
         storeClosesAt,
-      } = request.body;
+      }: Kiosk = request.body;
       if (
         !(
           id &&
           serialKey &&
           description &&
-          isKioskClosed &&
-          storeOpensAt &&
-          storeClosesAt
+          typeof isKioskClosed === 'boolean' &&
+          Boolean(storeOpensAt) &&
+          Boolean(storeClosesAt)
         )
       ) {
         next(new HttpException(400, 'Missing parameters'));
@@ -55,9 +56,12 @@ class KioskController implements Controller {
           storeOpensAt,
           storeClosesAt,
         });
-        response.status(201).json({kiosk});
+        response
+          .status(201)
+          .json({Message: 'Kiosk created successfully.', kiosk});
       } catch (error) {
         const dbError = error as dbExeption;
+        console.log(error);
         if (dbError.code === 11000) {
           next(new HttpException(400, 'Kiosk already exists'));
         } else {
@@ -110,7 +114,7 @@ class KioskController implements Controller {
       if (kiosk.modifiedCount === 0) {
         next(new HttpException(400, 'Kiosk not modified'));
       } else {
-        response.status(201).json({kiosk});
+        response.status(201).json({Message: 'Kiosk modified'});
       }
     } catch (error) {
       next(new HttpException(400, 'Cannot edit kiosk'));
@@ -126,7 +130,11 @@ class KioskController implements Controller {
       const {id} = request.body;
 
       const kiosk = await KioskModel.deleteOne({id: id});
-      response.status(201).json({kiosk});
+      if (kiosk.deletedCount === 0) {
+        next(new HttpException(400, 'Kiosk not deleted'));
+      } else {
+        response.status(201).json({Message: 'Kiosk deleted'});
+      }
     } catch (error) {
       next(new HttpException(400, 'Cannot delete kiosk'));
     }
