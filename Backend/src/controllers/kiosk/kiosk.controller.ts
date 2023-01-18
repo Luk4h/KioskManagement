@@ -14,6 +14,7 @@ class KioskController implements Controller {
   private initialiseRoutes() {
     this.router.get(`${this.path}`, this.query);
     this.router.post(`${this.path}`, this.create);
+    this.router.put(`${this.path}`, this.edit);
   }
 
   private create = async (
@@ -50,11 +51,44 @@ class KioskController implements Controller {
     response: Response,
     next: NextFunction
   ) => {
+    console.log('querying kiosks');
     try {
       const kiosks = await KioskModel.find().exec();
       response.status(200).json({kiosks});
     } catch (error) {
       next(new HttpException(400, 'Cannot query kiosks'));
+    }
+  };
+
+  private edit = async (
+    request: Request,
+    response: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const {
+        id,
+        serialKey,
+        description,
+        isKioskClosed,
+        storeOpensAt,
+        storeClosesAt,
+      } = request.body;
+
+      const kiosk = await KioskModel.updateOne(
+        {id: id},
+        {
+          id,
+          serialKey,
+          description,
+          isKioskClosed,
+          storeOpensAt,
+          storeClosesAt,
+        }
+      );
+      response.status(201).json({kiosk});
+    } catch (error) {
+      next(new HttpException(400, 'Cannot create kiosk'));
     }
   };
 }
