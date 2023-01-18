@@ -6,6 +6,8 @@ const KioskSchema = new Schema(
     id: {
       type: String,
       required: true,
+      unique: true,
+      autoIncrement: true,
     },
     serialKey: {
       type: String,
