@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 import * as compression from 'compression';
 import ErrorMiddleware from './utils/middlewares/errorMiddleware';
 import KioskController from './controllers/kiosk/kiosk.controller';
+import KioskModel from './models/kiosk';
 
 class App {
   public express: express.Application;
@@ -15,6 +16,7 @@ class App {
     this.initialiseMiddleware();
     this.initialiseRoutes();
     this.initialiseErrorHandling();
+    this.initialiseStoreHandling();
   }
 
   private initialiseDbConnection() {
@@ -45,6 +47,30 @@ class App {
 
   private initialiseErrorHandling() {
     this.express.use(ErrorMiddleware);
+  }
+
+  private initialiseStoreHandling() {
+    setInterval(async () => {
+      const kiosks = await KioskModel.find().exec();
+      kiosks.forEach(async kiosk => {
+        if (kiosk.isKioskClosed) {
+          const now = new Date();
+          const storeOpensAt = new Date(kiosk.storeOpensAt);
+          const storeClosesAt = new Date(kiosk.storeClosesAt);
+          if (now >= storeOpensAt && now <= storeClosesAt) {
+            kiosk.isKioskClosed = false;
+            await kiosk.save();
+          }
+        } else {
+          const now = new Date();
+          const storeClosesAt = new Date(kiosk.storeClosesAt);
+          if (now >= storeClosesAt) {
+            kiosk.isKioskClosed = true;
+            await kiosk.save();
+          }
+        }
+      });
+    }, 60000);
   }
 
   public listen() {
