@@ -26,13 +26,8 @@ class KioskController implements Controller {
     next: NextFunction
   ) => {
     try {
-      const {
-        id,
-        serialKey,
-        description,
-        storeOpensAt,
-        storeClosesAt,
-      }: Kiosk = request.body;
+      const {id, serialKey, description, storeOpensAt, storeClosesAt}: Kiosk =
+        request.body;
       if (
         !(
           id &&
@@ -90,13 +85,8 @@ class KioskController implements Controller {
     next: NextFunction
   ) => {
     try {
-      const {
-        id,
-        serialKey,
-        description,
-        storeOpensAt,
-        storeClosesAt,
-      } = request.body;
+      const {id, serialKey, description, storeOpensAt, storeClosesAt} =
+        request.body;
       if (
         !(
           id &&
