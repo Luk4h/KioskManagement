@@ -2,6 +2,7 @@ import {Router, Request, Response, NextFunction} from 'express';
 import Controller from '../../utils/interfaces/controller';
 import KioskModel from '../../models/kiosk';
 import HttpException from '../../utils/exceptions/exceptions';
+import dbExeption from '../../utils/interfaces/dbException';
 
 class KioskController implements Controller {
   public path = '/kiosks';
@@ -32,16 +33,24 @@ class KioskController implements Controller {
         storeOpensAt,
         storeClosesAt,
       } = request.body;
-
-      const kiosk = await KioskModel.create({
-        id,
-        serialKey,
-        description,
-        isKioskClosed,
-        storeOpensAt,
-        storeClosesAt,
-      });
-      response.status(201).json({kiosk});
+      try {
+        const kiosk = await KioskModel.create({
+          id,
+          serialKey,
+          description,
+          isKioskClosed,
+          storeOpensAt,
+          storeClosesAt,
+        });
+        response.status(201).json({kiosk});
+      } catch (error) {
+        const dbError = error as dbExeption;
+        if (dbError.code === 11000) {
+          next(new HttpException(400, 'Kiosk already exists'));
+        } else {
+          next(new HttpException(400, 'Cannot create kiosk'));
+        }
+      }
     } catch (error) {
       next(new HttpException(400, 'Cannot create kiosk'));
     }
@@ -78,7 +87,6 @@ class KioskController implements Controller {
       const kiosk = await KioskModel.updateOne(
         {id: id},
         {
-          id,
           serialKey,
           description,
           isKioskClosed,
@@ -86,7 +94,11 @@ class KioskController implements Controller {
           storeClosesAt,
         }
       );
-      response.status(201).json({kiosk});
+      if (kiosk.modifiedCount === 0) {
+        next(new HttpException(400, 'Kiosk not modified'));
+      } else {
+        response.status(201).json({kiosk});
+      }
     } catch (error) {
       next(new HttpException(400, 'Cannot edit kiosk'));
     }
