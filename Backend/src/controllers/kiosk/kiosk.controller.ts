@@ -100,6 +100,19 @@ class KioskController implements Controller {
         storeOpensAt,
         storeClosesAt,
       } = request.body;
+      if (
+        !(
+          id &&
+          serialKey &&
+          description &&
+          typeof isKioskClosed === 'boolean' &&
+          Boolean(storeOpensAt) &&
+          Boolean(storeClosesAt)
+        )
+      ) {
+        next(new HttpException(400, 'Missing parameters'));
+        return;
+      }
 
       const kiosk = await KioskModel.updateOne(
         {id: id},
