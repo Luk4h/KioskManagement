@@ -49,6 +49,7 @@ class App {
     this.express.use(ErrorMiddleware);
   }
 
+  // Function to check if kiosk should be open.
   private initialiseStoreHandling() {
     setInterval(async () => {
       const kiosks = await KioskModel.find().exec();
