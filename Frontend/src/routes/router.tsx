@@ -3,6 +3,7 @@ import {
     RouterProvider,
   } from "react-router-dom";
 import Create from "./create/create";
+import Edit from "./edit/edit";
 import Home from "./home/home";
 
 const router = createBrowserRouter([
@@ -12,7 +13,7 @@ const router = createBrowserRouter([
     },
     {
       path: "/Edit",
-      element: <></>,
+      element: <Edit />,
     },
     {
       path: "/Create",
