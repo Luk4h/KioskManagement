@@ -52,7 +52,6 @@ class KioskController implements Controller {
     response: Response,
     next: NextFunction
   ) => {
-    console.log('querying kiosks');
     try {
       const kiosks = await KioskModel.find().exec();
       response.status(200).json({kiosks});
