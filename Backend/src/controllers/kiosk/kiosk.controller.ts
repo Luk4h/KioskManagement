@@ -30,7 +30,6 @@ class KioskController implements Controller {
         id,
         serialKey,
         description,
-        isKioskClosed,
         storeOpensAt,
         storeClosesAt,
       }: Kiosk = request.body;
@@ -39,7 +38,6 @@ class KioskController implements Controller {
           id &&
           serialKey &&
           description &&
-          typeof isKioskClosed === 'boolean' &&
           Boolean(storeOpensAt) &&
           Boolean(storeClosesAt)
         )
@@ -52,7 +50,7 @@ class KioskController implements Controller {
           id,
           serialKey,
           description,
-          isKioskClosed,
+          isKioskClosed: false,
           storeOpensAt,
           storeClosesAt,
         });
@@ -96,7 +94,6 @@ class KioskController implements Controller {
         id,
         serialKey,
         description,
-        isKioskClosed,
         storeOpensAt,
         storeClosesAt,
       } = request.body;
@@ -105,7 +102,6 @@ class KioskController implements Controller {
           id &&
           serialKey &&
           description &&
-          typeof isKioskClosed === 'boolean' &&
           Boolean(storeOpensAt) &&
           Boolean(storeClosesAt)
         )
@@ -119,7 +115,6 @@ class KioskController implements Controller {
         {
           serialKey,
           description,
-          isKioskClosed,
           storeOpensAt,
           storeClosesAt,
         }
@@ -141,7 +136,6 @@ class KioskController implements Controller {
   ) => {
     try {
       const {id} = request.body;
-
       const kiosk = await KioskModel.deleteOne({id: id});
       if (kiosk.deletedCount === 0) {
         next(new HttpException(400, 'Kiosk not deleted'));
