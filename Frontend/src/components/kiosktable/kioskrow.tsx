@@ -39,9 +39,9 @@ const KioskRow = ( props: {kiosk: kioskRowProps} ) => {
         <td className="border-b break-normal border-slate-100 dark:border-slate-700 p-4 pl-8 text-slate-500 dark:text-slate-400">{props.kiosk.id}</td>
         <td className="border-b break-normal border-slate-100 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">{props.kiosk.serialKey}</td>
         <td className="border-b break-normal border-slate-100 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">{props.kiosk.description}</td>
-        <td className="border-b break-normal border-slate-100 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">{props.kiosk.isKioskClosed ? 'Open' : 'Closed'}</td>
+        <td className="border-b break-normal border-slate-100 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">{props.kiosk.isKioskClosed ? 'Closed' : 'Open'}</td>
         <td className="border-b break-normal border-slate-100 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">{new Date(props.kiosk.storeOpensAt).toLocaleTimeString('en-au', {hour: '2-digit', minute:'2-digit'})}</td>
-        <td className="border-b break-normal border-slate-100 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">{new Date(props.kiosk.storeOpensAt).toLocaleTimeString('en-au', {hour: '2-digit', minute:'2-digit'})}</td>
+        <td className="border-b break-normal border-slate-100 dark:border-slate-700 p-4 text-slate-500 dark:text-slate-400">{new Date(props.kiosk.storeClosesAt).toLocaleTimeString('en-au', {hour: '2-digit', minute:'2-digit'})}</td>
         <td className="border-b break-normal border-slate-100 dark:border-slate-700 p-4 pr-8 text-slate-500 dark:text-slate-400">
             <div className="flex gap-2">
                 <Link to={'/Edit?id='+props.kiosk.id} state={props.kiosk}>

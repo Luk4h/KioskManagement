@@ -19,7 +19,7 @@ const KiosksTable = (props: {kiosks: any[]}) => {
                         </tr>
                     </thead>
                     <tbody className="bg-white dark:bg-slate-800">
-                        { props.kiosks && props.kiosks.map(kiosk => <KioskRow kiosk={kiosk}/>) }
+                        { props.kiosks && props.kiosks.map(kiosk => {console.log((new Date(kiosk.storeOpensAt).toLocaleTimeString('pt-br', {hour: '2-digit', minute:'2-digit'})).split(' ')[0]); return <KioskRow kiosk={kiosk}/>}) }
                     </tbody>
                     </table>
                 </div>

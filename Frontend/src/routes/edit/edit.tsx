@@ -38,8 +38,8 @@ const Edit = () => {
                             setId(kiosk.id);
                             setSerialKey(kiosk.serialKey);
                             setDesc(kiosk.description);
-                            setOpensAt((new Date(kiosk.storeOpensAt).toLocaleTimeString('en-au', {hour: '2-digit', minute:'2-digit'})).split(' ')[0]);
-                            setClosesAt((new Date(kiosk.storeOpensAt).toLocaleTimeString('en-au', {hour: '2-digit', minute:'2-digit'})).split(' ')[0]);
+                            setOpensAt((new Date(kiosk.storeOpensAt).toLocaleTimeString('pt-br', {hour: '2-digit', minute:'2-digit'})).split(' ')[0]);
+                            setClosesAt((new Date(kiosk.storeClosesAt).toLocaleTimeString('br-pt', {hour: '2-digit', minute:'2-digit'})).split(' ')[0]);
                         };
                     })
                 })

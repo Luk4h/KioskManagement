@@ -55,24 +55,24 @@ class App {
     setInterval(async () => {
       const kiosks = await KioskModel.find().exec();
       kiosks.forEach(async kiosk => {
+        const Now = new Date().toLocaleTimeString('pt-br');
+        const StoreOpensAt = new Date(kiosk.storeOpensAt).toLocaleTimeString('pt-br');
+        const StoreClosesAt = new Date(kiosk.storeClosesAt).toLocaleTimeString('pt-br');
         if (kiosk.isKioskClosed) {
-          const now = new Date();
-          const storeOpensAt = new Date(kiosk.storeOpensAt);
-          const storeClosesAt = new Date(kiosk.storeClosesAt);
-          if (now >= storeOpensAt && now <= storeClosesAt) {
+          if ( Now >= StoreOpensAt && Now <= StoreClosesAt ) {
+            console.log(kiosk.id, ' deve estar aberto...')
             kiosk.isKioskClosed = false;
             await kiosk.save();
           }
         } else {
-          const now = new Date();
-          const storeClosesAt = new Date(kiosk.storeClosesAt);
-          if (now >= storeClosesAt) {
+          if ( Now <= StoreOpensAt && Now >= StoreClosesAt ) {
+            console.log(kiosk.id, ' deve estar fechado...')
             kiosk.isKioskClosed = true;
             await kiosk.save();
           }
         }
       });
-    }, 60000);
+    }, 10000);
   }
 
   public listen() {
