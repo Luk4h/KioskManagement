@@ -6,11 +6,6 @@ This is my attempt at a Kiosk Management app, with backend using express and noS
 
 I used a monorepo to contain both packages to facilitate viewing and understanding of them.
 
-## Usage
-
-I will leave an instance running on my local computer for easy access.
-You can access it on http://177.67.203.164:5080/.
-
 ## Installation
 
 To install both packages, you can use any module packager you want.
